@@ -13,16 +13,14 @@ services:
     restart: {{ restart_policy }}
     user: "appuser"
     cap_drop:
-      - ALL
-    cap_add:
-      - NET_BIND_SERVICE
+      - NET_ADMIN
+      - SYS_ADMIN
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:{{ service_port }}/healthz"]
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:3000/healthz\", timeout=4)'"]
       interval: 10s
       timeout: 5s
-      start_period: 10s
-      retries: 3
-    # Service port NOT exposed directly — all traffic via nginx
+      start_period: 15s
+      retries: 5
     expose:
       - "{{ service_port }}"
 

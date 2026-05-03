@@ -21,7 +21,6 @@ ENV APP_PORT=3000
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=3 \
-  CMD wget -qO- http://localhost:${APP_PORT}/healthz || exit 1
-
+HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=5 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3000/healthz', timeout=4)" || exit 1  
 CMD ["python", "main.py"]

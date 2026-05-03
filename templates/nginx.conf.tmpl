@@ -1,5 +1,6 @@
 upstream app_backend {
     server app:{{ service_port }};
+    keepalive 32;
 }
 
 log_format swiftdeploy '$time_iso8601 | $status | ${request_time}s | $upstream_addr | $request';
