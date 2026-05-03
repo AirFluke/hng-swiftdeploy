@@ -221,7 +221,7 @@ contact: "ops@swiftdeploy.local"     # Used in error response bodies
 ## Security
 
 - App container runs as non-root user (`appuser`)
-- All Linux capabilities dropped (`cap_drop: ALL`), only `NET_BIND_SERVICE` re-added
+- * Dangerous Linux capabilities dropped (`NET_ADMIN`, `SYS_ADMIN`)
 - Service port (`3000`) is never exposed to the host — only Nginx is
 - Images use Alpine base, keeping size well under 300MB
 
