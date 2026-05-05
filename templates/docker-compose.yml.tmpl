@@ -39,6 +39,29 @@ services:
       app:
         condition: service_healthy
 
+  opa:
+    image: {{ opa_image }}
+    container_name: swiftdeploy-opa
+    ports:
+      - "127.0.0.1:{{ opa_port }}:8181"
+    volumes:
+      - ./policies:/policies:ro
+    networks:
+      - {{ network_name }}
+    restart: {{ restart_policy }}
+    command:
+      - "run"
+      - "--server"
+      - "--addr=0.0.0.0:8181"
+      - "--log-level=error"
+      - "/policies"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8181/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
 networks:
   {{ network_name }}:
     driver: {{ network_driver }}
